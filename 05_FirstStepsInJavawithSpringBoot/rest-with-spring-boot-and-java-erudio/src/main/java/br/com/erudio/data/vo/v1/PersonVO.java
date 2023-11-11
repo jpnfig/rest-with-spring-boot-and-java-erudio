@@ -2,36 +2,33 @@ package br.com.erudio.data.vo.v1;
 
 import java.io.Serializable;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.hateoas.RepresentationModel;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-@JsonPropertyOrder({"id",  "address", "first_name", "last_name", "gender"})
-public class PersonVO implements Serializable {
+@JsonPropertyOrder({"id", "firstName", "lastName", "address", "gender"})
+public class PersonVO extends RepresentationModel<PersonVO> implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
+
+	@JsonProperty("id")
+	/* @Mapping("id") */
+	/* private Long key; */
 	private Long id;
-	
-	@JsonProperty("first_name")
 	private String firstName;
-	
-	@JsonProperty("last_name")
-	private String lastName;	
+	private String lastName;
 	private String address;
-	
-	@JsonIgnore
 	private String gender;
 	
-	public PersonVO() {
-	}
+	public PersonVO() {}
 
-	public Long getId() {
+	public Long getKey() {
 		return id;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public void setKey(Long key) {
+		this.id = key;
 	}
 
 	public String getFirstName() {
@@ -69,7 +66,7 @@ public class PersonVO implements Serializable {
 	@Override
 	public int hashCode() {
 		final int prime = 31;
-		int result = 1;
+		int result = super.hashCode();
 		result = prime * result + ((address == null) ? 0 : address.hashCode());
 		result = prime * result + ((firstName == null) ? 0 : firstName.hashCode());
 		result = prime * result + ((gender == null) ? 0 : gender.hashCode());
@@ -82,7 +79,7 @@ public class PersonVO implements Serializable {
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (obj == null)
+		if (!super.equals(obj))
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
@@ -114,5 +111,4 @@ public class PersonVO implements Serializable {
 			return false;
 		return true;
 	}
-	
 }
