@@ -33,7 +33,7 @@ public class PersonServices {
 		logger.info("persons: " + persons);
 		persons
 			.stream()
-			.forEach(p -> p.add(linkTo(methodOn(PersonController.class).findById(p.getKey())).withSelfRel()));
+			.forEach(p -> p.add(linkTo(methodOn(PersonController.class).findById(p.getId())).withSelfRel()));
 		
 		
 		return persons;
@@ -58,7 +58,7 @@ public class PersonServices {
 		logger.info("Creating one person!");
 		var entity = DozerMapper.parseObject(person, Person.class);
 		var vo =  DozerMapper.parseObject(repository.save(entity), PersonVO.class);
-		vo.add(linkTo(methodOn(PersonController.class).findById(vo.getKey())).withSelfRel());
+		vo.add(linkTo(methodOn(PersonController.class).findById(vo.getId())).withSelfRel());
 		return vo;
 	}
 	
@@ -68,7 +68,7 @@ public class PersonServices {
 		
 		logger.info("Updating one person!");
 		
-		var entity = repository.findById(person.getKey())
+		var entity = repository.findById(person.getId())
 			.orElseThrow(() -> new ResourceNotFoundException("No records found for this ID!"));
 
 		entity.setFirstName(person.getFirstName());
@@ -77,7 +77,7 @@ public class PersonServices {
 		entity.setGender(person.getGender());
 		
 		var vo =  DozerMapper.parseObject(repository.save(entity), PersonVO.class);
-		vo.add(linkTo(methodOn(PersonController.class).findById(vo.getKey())).withSelfRel());
+		vo.add(linkTo(methodOn(PersonController.class).findById(vo.getId())).withSelfRel());
 		return vo;
 	}
 	
