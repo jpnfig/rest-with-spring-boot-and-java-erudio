@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -198,9 +199,12 @@ public class BookControllerXmlTest extends AbstractIntegrationTest {
 							.asString();
 		
 		PagedModelBook wrapper = objectMapper.readValue(content, PagedModelBook.class);
-		List<BookVO> books = wrapper.getContent();
+		List<BookVO> books = new ArrayList<BookVO>();
+		books = wrapper.getContent();
 		
-		BookVO foundBookOne = books.get(0);
+		BookVO foundBookOne = new BookVO();
+		
+		foundBookOne = books.get(0);
 	    
 	    assertNotNull(foundBookOne.getId());
 	    assertNotNull(foundBookOne.getTitle());

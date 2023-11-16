@@ -43,7 +43,8 @@ class PersonServicesTest {
 
 	@Test
 	void testFindById() {
-		Person entity = input.mockEntity(1);
+		Person entity = new Person();
+		entity = input.mockEntity(1);
 		entity.setId(1L);
 		when(repository.findById(1L)).thenReturn(Optional.of(entity));
 		var result = service.findById(1L);
@@ -92,7 +93,8 @@ class PersonServicesTest {
 
 	@Test
 	void testUpdate() {
-		Person entity = input.mockEntity(1);
+		Person entity = new Person();
+		entity = input.mockEntity(1);
 		entity.setId(1L);
 		Person persisted = entity;
 		persisted.setId(1L);

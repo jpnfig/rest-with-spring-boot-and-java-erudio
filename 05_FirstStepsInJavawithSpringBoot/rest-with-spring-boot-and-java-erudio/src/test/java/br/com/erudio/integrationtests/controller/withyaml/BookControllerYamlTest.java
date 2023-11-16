@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -25,6 +26,7 @@ import br.com.erudio.integrationtests.vo.AccountCredentialsVO;
 import br.com.erudio.integrationtests.vo.BookVO;
 import br.com.erudio.integrationtests.vo.TokenVO;
 import br.com.erudio.integrationtests.vo.pagedmodels.PagedModelBook;
+import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.config.EncoderConfig;
 import io.restassured.config.RestAssuredConfig;
@@ -209,29 +211,36 @@ public class BookControllerYamlTest extends AbstractIntegrationTest {
     @Test
     @Order(6)
     public void testFindAll() throws JsonMappingException, JsonProcessingException {
-        var response = given()
+    	
+    	PagedModelBook response = new PagedModelBook();
+    	var specBuilder = new RequestSpecBuilder();
+    	
+		if (response != null) {	
+			response = given()
                     .config(
                         RestAssuredConfig
                             .config()
                             .encoderConfig(EncoderConfig.encoderConfig()
                                     .encodeContentTypeAs(TestConfigs.CONTENT_TYPE_YML, ContentType.TEXT)))
-                    .spec(specification)
+                .spec(specBuilder.build())
                 .contentType(TestConfigs.CONTENT_TYPE_YML)
 				.accept(TestConfigs.CONTENT_TYPE_YML)
             	.queryParams("page", 0 , "limit", 12, "direction", "asc")
                     .when()
-                    .get()
+					.get()
                 .then()
-                    .statusCode(200)
-                .extract()
-                    .body()
-                    	.as(PagedModelBook.class, objectMapper); 
+			    	.statusCode(200) 
+			    	.extract()
+					.body()
+                    .as(PagedModelBook.class, objectMapper);
+		}	
 
+    	List<BookVO> content = new ArrayList<BookVO>();
+    	
+    	content = response.getContent();
 
-        List<BookVO> content = response.getContent();
-
-        BookVO foundBookOne = content.get(0);
-        
+		BookVO foundBookOne = content.get(0);;
+		   
         assertNotNull(foundBookOne.getId());
         assertNotNull(foundBookOne.getTitle());
         assertNotNull(foundBookOne.getAuthor());

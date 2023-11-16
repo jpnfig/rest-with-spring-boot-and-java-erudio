@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.aspectj.lang.annotation.Before;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
@@ -39,7 +40,7 @@ public class PersonControllerXmlTest extends AbstractIntegrationTest {
 
 	private static PersonVO person;
 
-	@Before(value = "")
+	@BeforeAll
 	public static void setup() {
 		objectMapper = new XmlMapper();
 		objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
@@ -257,7 +258,8 @@ public class PersonControllerXmlTest extends AbstractIntegrationTest {
 		
 		PagedModelPerson wrapper = objectMapper.readValue(content, PagedModelPerson.class);
 		var people = wrapper.getContent();
-		PersonVO foundPersonOne = people.get(0);
+		PersonVO foundPersonOne = new PersonVO();
+		foundPersonOne = people.get(0);
 		
 		assertNotNull(foundPersonOne.getId());
 		assertNotNull(foundPersonOne.getFirstName());

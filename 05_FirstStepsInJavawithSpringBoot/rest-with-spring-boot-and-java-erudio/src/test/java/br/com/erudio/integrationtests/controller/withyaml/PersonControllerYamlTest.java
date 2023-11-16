@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.aspectj.lang.annotation.Before;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
@@ -22,7 +22,6 @@ import br.com.erudio.integrationtests.testcontainers.AbstractIntegrationTest;
 import br.com.erudio.integrationtests.vo.AccountCredentialsVO;
 import br.com.erudio.integrationtests.vo.PersonVO;
 import br.com.erudio.integrationtests.vo.pagedmodels.PagedModelPerson;
-import br.com.erudio.integrationtests.vo.wrappers.WrapperPersonVO;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.config.EncoderConfig;
 import io.restassured.config.RestAssuredConfig;
@@ -41,7 +40,7 @@ public class PersonControllerYamlTest extends AbstractIntegrationTest {
 
 	private static PersonVO person;
 
-	@Before(value = "")
+	@BeforeAll
 	public static void setup() {
 		objectMapper = new YMLMapper();
 		person = new PersonVO();
@@ -280,7 +279,8 @@ public class PersonControllerYamlTest extends AbstractIntegrationTest {
 						});*/
 		
 		var people = wrapper.getContent();
-		PersonVO foundPersonOne = people.get(0);
+		PersonVO foundPersonOne = new PersonVO();
+		foundPersonOne = people.get(0);
 		
 		assertNotNull(foundPersonOne.getId());
 		assertNotNull(foundPersonOne.getFirstName());
