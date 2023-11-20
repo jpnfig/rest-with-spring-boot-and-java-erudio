@@ -53,7 +53,7 @@ public class JwtTokenProvider {
 	
 	public TokenVO refreshToken(String refreshToken) {
 		if (refreshToken.contains("Bearer ")) {
-			refreshToken = refreshToken.substring("Bearer ".length()).strip();
+			refreshToken = refreshToken.substring("Bearer ".length());
 		}
 		JWTVerifier verifier = JWT.require(algorithm).build();
 		DecodedJWT decodedJWT = verifier.verify(refreshToken);
@@ -103,7 +103,7 @@ public class JwtTokenProvider {
 	public String resolveToken(HttpServletRequest req) {
 		String bearerToken = req.getHeader("Authorization");
 		if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
-			return bearerToken.substring("Bearer ".length()).strip();
+			return bearerToken.substring("Bearer ".length());
 		}
 		return null;
 	}
